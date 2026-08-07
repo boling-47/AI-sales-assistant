@@ -24,6 +24,18 @@ def safe_write_image(fig, filename):
         pass
 
 
+def style_chart(fig):
+    """设置图表样式：白色背景、黑色文字、彩色区分"""
+    fig.update_layout(
+        template='plotly_white',
+        paper_bgcolor='white',
+        plot_bgcolor='white',
+        font=dict(color='black', size=14),
+        colorway=['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
+    )
+    return fig
+
+
 def get_ai_report(data):
     prompt = f"""
     你是一名销售分析师。
@@ -121,6 +133,7 @@ if file:
                 y="销量",
                 title="产品销量"
             )
+            style_chart(fig_sales)
             safe_write_image(fig_sales, "sales_chart.png")
             st.plotly_chart(
                 fig_sales,
@@ -145,6 +158,7 @@ if file:
                 y="金额",
                 title="产品销售额"
             )
+            style_chart(fig_money)
             safe_write_image(fig_money, "money_chart.png")
             st.plotly_chart(
                 fig_money,
@@ -158,6 +172,7 @@ if file:
             values="销量",
             title="产品销售占比"
         )
+        style_chart(fig2)
         safe_write_image(fig2, "pie_chart.png")
         st.plotly_chart(fig2, use_container_width=True)
 
@@ -187,6 +202,7 @@ if file:
                 y="销量",
                 title="销售数量趋势"
             )
+            style_chart(fig_line)
             safe_write_image(fig_line, "line_chart.png")
             st.plotly_chart(fig_line, use_container_width=True)
         else:
