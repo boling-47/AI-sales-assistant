@@ -31,7 +31,9 @@ def style_chart(fig):
         paper_bgcolor='white',
         plot_bgcolor='white',
         font=dict(color='black', size=14),
-        colorway=['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
+        colorway=['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'],
+        xaxis=dict(tickfont=dict(color='black', size=12), title_font=dict(color='black', size=13)),
+        yaxis=dict(tickfont=dict(color='black', size=12), title_font=dict(color='black', size=13))
     )
     return fig
 
@@ -131,7 +133,8 @@ if file:
                 product_sales,
                 x="产品",
                 y="销量",
-                title="产品销量"
+                title="产品销量",
+                color="产品"
             )
             style_chart(fig_sales)
             safe_write_image(fig_sales, "sales_chart.png")
@@ -156,7 +159,8 @@ if file:
                 product_money,
                 x="产品",
                 y="金额",
-                title="产品销售额"
+                title="产品销售额",
+                color="产品"
             )
             style_chart(fig_money)
             safe_write_image(fig_money, "money_chart.png")
