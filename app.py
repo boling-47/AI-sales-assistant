@@ -31,7 +31,8 @@ def style_chart(fig):
         plot_bgcolor='white',
         font=dict(color='black', size=14),
         xaxis=dict(tickfont=dict(color='black', size=12), title_font=dict(color='black', size=13)),
-        yaxis=dict(tickfont=dict(color='black', size=12), title_font=dict(color='black', size=13))
+        yaxis=dict(tickfont=dict(color='black', size=12), title_font=dict(color='black', size=13)),
+        legend=dict(font=dict(color='black', size=12))
     )
     return fig
 
