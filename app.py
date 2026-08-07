@@ -25,17 +25,18 @@ def safe_write_image(fig, filename):
 
 
 def style_chart(fig):
-    """设置图表样式：白色背景、黑色文字、彩色区分"""
+    """设置图表样式：白色背景、黑色文字"""
     fig.update_layout(
-        template='plotly_white',
         paper_bgcolor='white',
         plot_bgcolor='white',
         font=dict(color='black', size=14),
-        colorway=['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'],
         xaxis=dict(tickfont=dict(color='black', size=12), title_font=dict(color='black', size=13)),
         yaxis=dict(tickfont=dict(color='black', size=12), title_font=dict(color='black', size=13))
     )
     return fig
+
+
+CHART_COLORS = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
 
 
 def get_ai_report(data):
@@ -134,7 +135,8 @@ if file:
                 x="产品",
                 y="销量",
                 title="产品销量",
-                color="产品"
+                color="产品",
+                color_discrete_sequence=CHART_COLORS
             )
             style_chart(fig_sales)
             safe_write_image(fig_sales, "sales_chart.png")
@@ -160,7 +162,8 @@ if file:
                 x="产品",
                 y="金额",
                 title="产品销售额",
-                color="产品"
+                color="产品",
+                color_discrete_sequence=CHART_COLORS
             )
             style_chart(fig_money)
             safe_write_image(fig_money, "money_chart.png")
@@ -174,7 +177,9 @@ if file:
             product_sales,
             names="产品",
             values="销量",
-            title="产品销售占比"
+            title="产品销售占比",
+            color="产品",
+            color_discrete_sequence=CHART_COLORS
         )
         style_chart(fig2)
         safe_write_image(fig2, "pie_chart.png")
