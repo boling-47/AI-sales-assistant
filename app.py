@@ -297,22 +297,36 @@ if file:
             x = np.arange(len(monthly_sales))
             y = monthly_sales.values.astype(float)
             coeffs = np.polyfit(x, y, 1)
-            next_x = len(monthly_sales)
-            trend_pred = int(coeffs[0] * next_x + coeffs[1])
+
+            # 预测未来3个月
+            future_labels = []
+            trend_preds = []
+            last_idx = monthly_sales.index[-1]
+            for i in range(1, 4):
+                future_x = len(monthly_sales) - 1 + i
+                pred = int(coeffs[0] * future_x + coeffs[1])
+                pred = max(pred, 0)
+                trend_preds.append(pred)
+                next_period = last_idx + i
+                future_labels.append(str(next_period))
 
             # 移动平均预测（最近3个月）
             ma_pred = int(monthly_sales.iloc[-3:].mean())
 
             col_p1, col_p2 = st.columns(2)
             with col_p1:
-                st.metric("下月预测（趋势线）", f"{trend_pred} 件")
+                st.metric("下月预测（趋势线）", f"{trend_preds[0]} 件")
             with col_p2:
                 st.metric("下月预测（移动平均）", f"{ma_pred} 件")
 
-            # 预测趋势图（历史 + 预测点）
+            st.write(f"未来3个月趋势预测：{trend_preds[0]} → {trend_preds[1]} → {trend_preds[2]} 件")
+
+            # 预测趋势图（历史 + 预测）
             hist_months = [str(idx) for idx in monthly_sales.index]
             hist_values = list(monthly_sales.values)
+
             fig_forecast = go.Figure()
+            # 历史销量
             fig_forecast.add_trace(go.Scatter(
                 x=hist_months,
                 y=hist_values,
@@ -320,9 +334,10 @@ if file:
                 name='历史销量',
                 line=dict(color='#1f77b4', width=2)
             ))
+            # 趋势预测（从最后一个历史点延伸）
             fig_forecast.add_trace(go.Scatter(
-                x=[hist_months[-1], "预测下月"],
-                y=[hist_values[-1], trend_pred],
+                x=[hist_months[-1]] + future_labels,
+                y=[hist_values[-1]] + trend_preds,
                 mode='lines+markers',
                 name='趋势预测',
                 line=dict(color='#ff7f0e', width=2, dash='dash'),
@@ -336,7 +351,7 @@ if file:
             st.caption("💡 趋势预测基于线性回归，移动平均基于最近3个月数据。仅供参考，实际备货需结合季节性等因素。")
 
             if forecast_data:
-                forecast_data["趋势预测"] = f"{trend_pred} 件"
+                forecast_data["趋势预测"] = f"{trend_preds[0]} 件"
                 forecast_data["移动平均预测"] = f"{ma_pred} 件"
         elif monthly_sales is not None:
             st.info("数据不足，至少需要三个月的数据才能做需求预测")
