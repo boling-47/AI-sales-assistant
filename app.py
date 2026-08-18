@@ -32,10 +32,7 @@ if 'behavior_report' not in st.session_state:
 
 
 def safe_write_image(fig, filename):
-    try:
-        fig.write_image(filename)
-    except Exception:
-        pass
+    pass
 
 
 def style_chart(fig):
