@@ -481,7 +481,7 @@ if has_customer_data:
             1 for uid, fdate in first_purchase.items()
             if act_start <= fdate <= act_end
         )
-        activity_new_customers[activity] = new_in_customers
+        activity_new_customers[activity] = new_in_activity
 
         act_daily_avg = df[act_mask]['销量'].sum() / max(1, (act_end - act_start).days + 1)
         before_mask = (df['日期'] < act_start) & (df['日期'] >= act_start - pd.Timedelta(days=30))
